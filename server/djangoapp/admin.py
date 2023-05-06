@@ -19,6 +19,5 @@ class CarMakeAdmin(admin.ModelAdmin):
     list_filter = ['name']
     search_fields = ['name']
 # Register models here
-
 admin.site.register(CarMake, CarMakeAdmin)
 admin.site.register(CarModel, CarModelAdmin)

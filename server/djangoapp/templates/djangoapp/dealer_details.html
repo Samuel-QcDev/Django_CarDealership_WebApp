@@ -21,6 +21,7 @@
                 {% if user.is_authenticated %}
                 <li>
                     <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                    <a class="btn btn-dark" href="{% url 'djangoapp:add_review' dealer.id%}">Write a Review</a>
                     <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a> 
                 </li>
                 {% else %}
@@ -39,8 +40,33 @@
             </ul>
         </div>
     </nav>
+    <h3 style="color:black">Reviews for {{dealer.full_name}} :</h3>
     <!-- Add reviews as cards -->
-    <h1>Test</h1>
+    <div class="card-columns">
+        {% if not reviews %}
+        <br>
+        <h4 style="color:black">No reviews available for this dealer. Click "Add Review" to add one!</h4> 
+        {% endif %}        
+        {% for review in reviews %}
+        <div class="card">
+            {% if review.sentiment == "positive" %}
+            <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png" width="36px" height="36px"
+                alt="Sentiment" style="margin : 10px">
+            {% elif review.sentiment == "negative" %}
+            <img class="card-img-left" src="{{MEDIA_URL}}/emoji/negative.png" width="36px" height="36px"
+                    alt="Sentiment" style="margin : 10px">
+            {% else %}
+            <img class="card-img-left" src="{{MEDIA_URL}}/emoji/neutral.png" width="36px" height="36px"
+                    alt="Sentiment" style="margin : 10px">
+            {% endif %}
+            <div class="card-body">
+                <card-title>{{review.car_make}}, {{review.car_model}}</card-title> <br>
+                <card-title>{{review.car_year}}</card-title><br>
+                <card-title>{{review.review}}</card-title>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
     </body>
 
 </html>

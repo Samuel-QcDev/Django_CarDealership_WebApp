@@ -41,5 +41,48 @@
             </div>
         </nav>
     <!--Add review form here -->
+    <form action="{% url 'djangoapp:add_review' dealer.id%}" method="post">
+        <div class="container">
+            <h1>Add a review about <b>{{dealer.full_name}}</b></h1>
+            <hr>
+            <label for="content"><b>Enter the review content:</b></label>
+            <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
+                <label class="form-check-label" for="purchasecheck">
+                    Has purchased the car from {{dealer.full_name}} ?
+                </label>
+                <label class="text-muted">(select purchased car information below if checked)</label>
+            </div>
+            <div class="mb-3">
+                <label for="car"><b>Select your car (model-make-year):</b></label>
+                <select name="car" id="car" class="form-select" optional>
+                    {% for car in cars %}
+                    <option selected value={{car.id}}>{{car.car_make.name}}-{{car.name}}- {{ car.year|date:"Y" }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="purchasedate"><b>Select Your Purchase Date (MM/DD/YYYY) : </b></label>
+                <input class="date-own form-control" style="width: 300px;" type="date" name="purchasedate" id="purchasedate">
+            </div>          
+
+            <div>
+                {% csrf_token %}
+                <button class="button" type="submit">Submit</button>
+            </div>
+        </div>
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning" role="alert">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+    </form>    
     </body>
+    <script type="text/javascript">
+        $('.datepicker').datepicker().on('hide', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+    </script>   
 </html>
